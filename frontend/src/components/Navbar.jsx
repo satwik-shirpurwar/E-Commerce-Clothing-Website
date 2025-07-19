@@ -5,7 +5,7 @@ import { ShopContext } from '../context/ShopContext';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false); // NEW: dropdown open state
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems } = useContext(ShopContext);
 
@@ -14,7 +14,7 @@ const Navbar = () => {
     localStorage.removeItem('token');
     setToken('');
     setCartItems({});
-    setIsProfileOpen(false); // close dropdown on logout
+    setIsProfileOpen(false);
   };
 
   const handleProfileClick = () => {
@@ -29,11 +29,11 @@ const Navbar = () => {
     <div className='flex items-center justify-between py-4 px-4 md:px-8 lg:px-12 bg-white shadow-sm rounded-b-2xl font-medium relative z-20'>
       {/* Logo */}
       <Link to='/'>
-        <img src={assets.logo} className='w-25 sm:w-40' alt="Logo" />
+        <img src={assets.logo} className='w-24 sm:w-32 md:w-40' alt="Logo" />
       </Link>
 
       {/* Desktop Menu */}
-      <ul className='hidden sm:flex gap-6 text-gray-700 text-sm'>
+      <ul className='hidden md:flex gap-6 text-gray-700 text-sm'>
         {['/', '/collection', '/about', '/contact'].map((path, idx) => (
           <NavLink
             key={idx}
@@ -46,7 +46,7 @@ const Navbar = () => {
           >
             {({ isActive }) => (
               <>
-                <p>{path === '/' ? 'HOME' : path.replace('/', '').toUpperCase()}</p>
+                <p className='text-xs md:text-sm'>{path === '/' ? 'HOME' : path.replace('/', '').toUpperCase()}</p>
                 <hr
                   className={`w-2/4 border-none h-[2px] bg-gray-700 transition-opacity ${
                     isActive ? 'opacity-100' : 'opacity-0'
@@ -59,7 +59,7 @@ const Navbar = () => {
       </ul>
 
       {/* Right Icons */}
-      <div className='flex items-center gap-5'>
+      <div className='flex items-center gap-4 sm:gap-5'>
         <img
           onClick={() => { setShowSearch(true); navigate('/collection'); }}
           src={assets.search_icon}
@@ -74,10 +74,9 @@ const Navbar = () => {
             src={assets.profile_icon}
             alt="Profile"
           />
-          {/* Dropdown */}
           {token && isProfileOpen && (
-            <div className='absolute right-0 mt-2 bg-white border rounded shadow-lg'>
-              <div className='flex flex-col text-gray-600'>
+            <div className='absolute right-0 mt-2 bg-white border rounded shadow-lg min-w-[150px]'>
+              <div className='flex flex-col text-gray-600 text-sm'>
                 <p onClick={() => { navigate('/profile'); setIsProfileOpen(false); }} className='px-4 py-2 hover:bg-gray-50 cursor-pointer'>My Profile</p>
                 <p onClick={() => { navigate('/orders'); setIsProfileOpen(false); }} className='px-4 py-2 hover:bg-gray-50 cursor-pointer'>Orders</p>
                 <p onClick={logout} className='px-4 py-2 hover:bg-gray-50 cursor-pointer'>Logout</p>
@@ -101,14 +100,14 @@ const Navbar = () => {
         <img
           onClick={() => setVisible(true)}
           src={assets.menu_icon}
-          className='w-5 cursor-pointer sm:hidden'
+          className='w-5 cursor-pointer md:hidden'
           alt="Menu"
         />
       </div>
 
       {/* Sidebar for Mobile */}
       <div className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transition-transform duration-300 z-30 ${visible ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className='flex flex-col'>
+        <div className='flex flex-col h-full'>
           <div onClick={() => setVisible(false)} className='flex items-center gap-3 p-4 cursor-pointer border-b'>
             <img className='h-4 rotate-180' src={assets.dropdown_icon} alt="Back" />
             <p className='text-gray-700'>Back</p>
@@ -118,7 +117,7 @@ const Navbar = () => {
               key={idx}
               onClick={() => setVisible(false)}
               to={path}
-              className='py-3 px-6 text-gray-700 border-b hover:bg-gray-50'
+              className='py-3 px-6 text-gray-700 border-b hover:bg-gray-50 text-sm'
             >
               {path === '/' ? 'HOME' : path.replace('/', '').toUpperCase()}
             </NavLink>
